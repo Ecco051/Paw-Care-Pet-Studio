@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booking Confirmation — PawCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #FFF8F0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Poppins', -apple-system, sans-serif;
+      padding: 32px 20px;
+    }
+    .card {
+      max-width: 640px;
+      width: 100%;
+      background: #FFFFFF;
+      border-radius: 20px;
+      box-shadow: 0 16px 48px rgba(93, 64, 55, 0.12);
+      border: 1px solid #EFE0D0;
+      padding: 40px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* 装饰小元素（纸角标记） */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle at 100% 0%, #FFEED9 0%, transparent 70%);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    /* 顶部标志区 */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #EFE0D0;
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: #E8A87C;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      font-size: 20px;
+      font-weight: 700;
+      font-family: 'Playfair Display', serif;
+      flex-shrink: 0;
+    }
+    .brand-name {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #5D4037;
+      line-height: 1.2;
+    }
+    .brand-name small {
+      display: block;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 400;
+      font-size: 0.7rem;
+      color: #A1887F;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .confirmation-badge {
+      background: #E8F5E9;
+      color: #2E7D32;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border: 1px solid #A5D6A7;
+    }
+    /* 标题 */
+    .title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #5D4037;
+      margin-bottom: 4px;
+    }
+    .sub-title {
+      font-size: 0.85rem;
+      color: #8D6E63;
+      margin-bottom: 20px;
+    }
+    /* 编号行 */
+    .ref-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px 32px;
+      background: #FFF8F0;
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      font-size: 0.85rem;
+      border: 1px solid #EFE0D0;
+    }
+    .ref-row strong {
+      color: #5D4037;
+      font-weight: 600;
+    }
+    .ref-row span {
+      color: #8D6E63;
+    }
+    /* 宠物卡片 */
+    .pet-card {
+      background: #FFF8F0;
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin-bottom: 24px;
+      border: 1px solid #EFE0D0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 24px;
+    }
+    .pet-card .label {
+      font-size: 0.7rem;
+      color: #A1887F;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      font-weight: 500;
+    }
+    .pet-card .value {
+      font-weight: 500;
+      color: #5D4037;
+      font-size: 0.9rem;
+    }
+    .pet-card .value .breed-tag {
+      display: inline-block;
+      background: #FFEED9;
+      padding: 0 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      color: #C38D6E;
+      font-weight: 500;
+    }
+    .vaccine-status {
+      display: inline-block;
+      padding: 2px 12px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-left: 6px;
+    }
+    .vaccine-valid {
+      background: #E8F5E9;
+      color: #2E7D32;
+    }
+    .vaccine-expired {
+      background: #FFCDD2;
+      color: #C62828;
+    }
+    /* 服务明细 */
+    .service-section {
+      margin-bottom: 20px;
+    }
+    .service-section h4 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #5D4037;
+      margin-bottom: 10px;
+      border-bottom: 1px dashed #EFE0D0;
+      padding-bottom: 8px;
+    }
+    .service-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-size: 0.9rem;
+      color: #5D4037;
+    }
+    .service-item .price {
+      font-weight: 500;
+      color: #C38D6E;
+    }
+    .service-item.package {
+      font-weight: 600;
+      color: #5D4037;
+    }
+    .addon-item {
+      padding-left: 18px;
+      color: #8D6E63;
+      font-size: 0.85rem;
+    }
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #5D4037;
+      border-top: 2px solid #E8A87C;
+      padding-top: 14px;
+      margin-top: 6px;
+    }
+    /* 美容师 & 时间 */
+    .groomer-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px 32px;
+      background: #FFFFFF;
+      border-radius: 12px;
+      padding: 14px 18px;
+      border: 1px solid #EFE0D0;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    .groomer-row .item {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .groomer-row .item .lbl {
+      font-size: 0.7rem;
+      color: #A1887F;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      font-weight: 500;
+    }
+    .groomer-row .item .val {
+      font-weight: 500;
+      color: #5D4037;
+      font-size: 0.9rem;
+    }
+    .groomer-row .item .val .highlight {
+      color: #C38D6E;
+      font-weight: 600;
+    }
+    /* 备注 */
+    .notes {
+      font-size: 0.8rem;
+      color: #8D6E63;
+      background: #FFF8F0;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid #EFE0D0;
+      margin-top: 16px;
+    }
+    .notes strong {
+      color: #5D4037;
+      font-weight: 500;
+    }
+    /* 底部 */
+    .footer {
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid #EFE0D0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      color: #A1887F;
+    }
+    .footer .stamp {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: #C38D6E;
+      font-size: 0.85rem;
+    }
+    /* 响应式 */
+    @media (max-width: 480px) {
+      .card { padding: 24px 18px; }
+      .ref-row { flex-direction: column; gap: 4px; }
+      .pet-card { flex-direction: column; gap: 4px; }
+      .groomer-row { flex-direction: column; gap: 8px; }
+      .header { flex-direction: column; gap: 12px; }
+      .total-row { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <!-- ===== 顶部 ===== -->
+    <div class="header">
+      <div class="brand">
+        <div class="brand-icon">🐾</div>
+        <div class="brand-name">
+          PawCare Pet Studio
+          <small>Grooming · Retail · Care</small>
+        </div>
+      </div>
+      <div class="confirmation-badge">✓ Confirmed</div>
+    </div>
+
+    <!-- ===== 标题 ===== -->
+    <div class="title">Booking Confirmation</div>
+    <div class="sub-title">Thank you for choosing PawCare. Your appointment is now confirmed.</div>
+
+    <!-- ===== 编号行 ===== -->
+    <div class="ref-row">
+      <div><strong>Booking #</strong> <span>BK-20260730-001</span></div>
+      <div><strong>Member #</strong> <span>PC-20260730-001</span></div>
+      <div><strong>Date</strong> <span>Thursday, 30 July 2026</span></div>
+    </div>
+
+    <!-- ===== 宠物信息 ===== -->
+    <div class="pet-card">
+      <div style="flex:1;min-width:120px;">
+        <div class="label">Pet Name</div>
+        <div class="value">Max</div>
+      </div>
+      <div style="flex:1;min-width:120px;">
+        <div class="label">Breed</div>
+        <div class="value">Golden Retriever <span class="breed-tag">Dog</span></div>
+      </div>
+      <div style="flex:1;min-width:120px;">
+        <div class="label">Vaccination Status</div>
+        <div class="value">
+          C5 (exp: 15 Jan 2027)
+          <span class="vaccine-status vaccine-valid">● Valid</span>
+        </div>
+        <!-- 过期状态示例（仅用于说明，实际按数据动态切换） 
+        <div class="value" style="margin-top:4px;">
+          F3 (exp: 10 Dec 2025)
+          <span class="vaccine-status vaccine-expired">● Expired</span>
+        </div>
+        -->
+      </div>
+    </div>
+
+    <!-- ===== 服务明细 ===== -->
+    <div class="service-section">
+      <h4>✨ Services Selected</h4>
+      <div class="service-item package">
+        <span>Full Styling</span>
+        <span class="price">$105.00</span>
+      </div>
+      <div class="service-item addon-item">
+        <span>+ De-shedding Treatment</span>
+        <span class="price">$35.00</span>
+      </div>
+      <div class="service-item addon-item">
+        <span>+ Nail Trim &amp; File</span>
+        <span class="price">$20.00</span>
+      </div>
+      <div class="service-item addon-item">
+        <span>+ Teeth Brushing</span>
+        <span class="price">$18.00</span>
+      </div>
+      <div class="total-row">
+        <span>Total (incl. GST)</span>
+        <span>$178.00</span>
+      </div>
+    </div>
+
+    <!-- ===== 美容师 & 时间 ===== -->
+    <div class="groomer-row">
+      <div class="item">
+        <span class="lbl">Groomer</span>
+        <span class="val"><span class="highlight">Sophia Costa</span></span>
+      </div>
+      <div class="item">
+        <span class="lbl">Date</span>
+        <span class="val">30 July 2026</span>
+      </div>
+      <div class="item">
+        <span class="lbl">Time</span>
+        <span class="val">10:00 – 10:30</span>
+      </div>
+      <div class="item">
+        <span class="lbl">Booking Type</span>
+        <span class="val">Pre-booked</span>
+      </div>
+    </div>
+
+    <!-- ===== 备注 ===== -->
+    <div class="notes">
+      <strong>📝 Notes:</strong> Slightly anxious around other dogs — please keep calm environment.
+    </div>
+
+    <!-- ===== 底部 ===== -->
+    <div class="footer">
+      <span>© 2026 PawCare Pet Studio · Sydney</span>
+      <span class="stamp">✦ confirmed with love</span>
+    </div>
+  </div>
+</body>
+</html>
